@@ -1,24 +1,32 @@
-chrome.storage.local.get("characters", (data) => {
-    const characters = data.characters
+// Get stored word list from chrome storage
+chrome.storage.local.get(["vocabulary", "kanji"], (data) => {
+    const vocabulary = data.vocabulary
+    const kanji = data.kanji
 
+    // Fetch all <ruby> tags on the website
     var rubyTags = document.body.getElementsByTagName("ruby")
 
     for(let tag in rubyTags)
     {
+        // Copy the ruby element into a new ruby element so we can modify it
+        // without modifying the website
         var ruby = document.createElement("ruby")
         ruby.innerHTML = rubyTags.item(tag).innerHTML
 
-        var dummyRtTag = ruby.getElementsByTagName("rt").item(0)
-        try 
+        // Remove all tags (except for <rb>)
+        while(ruby.lastElementChild)
         {
-            dummyRtTag.parentNode.removeChild(dummyRtTag)
-        } catch(error)
-        {
-            console.error(error)
-            console.log(ruby)
+            if(ruby.lastElementChild.tagName.toLowerCase() === "rb")
+            {
+                ruby.innerHTML = ruby.lastElementChild.innerHTML
+                break
+            }
+
+            ruby.removeChild(ruby.lastElementChild)
         }
 
-        if(characters.includes(ruby.innerText))
+        // If the contents of the <ruby> tag are in the word list, remove the <rt> tag
+        if(vocabulary.includes(ruby.innerText) || kanji.includes(ruby.innerText))
         {
             var rtTag = rubyTags.item(tag).getElementsByTagName("rt").item(0)
             try 
