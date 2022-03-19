@@ -33,9 +33,9 @@ submitButton.addEventListener( "click", () => {
 const downloadButton = document.getElementById("download");
 downloadButton.addEventListener("click", async () => {
     const userData = await getStorageData("token")
-    var url = "https://api.wanikani.com/v2/level_progressions"
+    var url = "https://api.wanikani.com/v2/user"
     var response = await query(userData.token, url)
-    var level = response.total_count
+    var level = response.data.level
     var levelArray = []
     for(var i = 1; i < level; i++)
         levelArray.push(i)
@@ -43,27 +43,32 @@ downloadButton.addEventListener("click", async () => {
     var levelURLString = levelArray.join(",")
 
     var url = "https://api.wanikani.com/v2/subjects?types=vocabulary&levels=" + levelURLString
-    var parsedData = []
+    var vocabulary = []
 
     do
     {
         var response = await query(userData.token, url)
         for(let i in response.data)
-        {
-            parsedData.push(response.data[i].data.characters)
-        }
+            vocabulary.push(response.data[i].data.characters)
 
-        console.log(response)
         url = response.pages.next_url
     } while(url !== null)
 
-    chrome.storage.local.set({"characters": parsedData})
-    console.log("Downloaded data!")
-})
+    var url = "https://api.wanikani.com/v2/subjects?types=kanji&levels=" + levelURLString
+    var kanji = []
 
-const printButton = document.getElementById("print");
-printButton.addEventListener("click", () => {
-    chrome.storage.local.get("characters", (data) => {
-        console.log(data.characters)
+    do
+    {
+        var response = await query(userData.token, url)
+        for(let i in response.data)
+        kanji.push(response.data[i].data.characters)
+
+        url = response.pages.next_url
+    } while(url !== null)
+
+    chrome.storage.local.set({
+        "vocabulary": vocabulary,
+        "kanji": kanji
     })
+    console.log("Downloaded data!")
 })
