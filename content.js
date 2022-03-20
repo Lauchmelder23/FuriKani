@@ -21,7 +21,8 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel"], (data) => {
         // Remove all tags (except for <rb>)
         while(ruby.lastElementChild)
         {
-            if(ruby.lastElementChild.tagName.toLowerCase() === "rb")
+            if(ruby.lastElementChild.tagName.toLowerCase() === "rb" ||
+                ruby.lastElementChild.tagName.toLowerCase() === "span")
             {
                 ruby.innerHTML = ruby.lastElementChild.innerHTML
                 break
