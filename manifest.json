@@ -1,7 +1,7 @@
 {
     "name": "FuriKani",
     "description": "Removes furigana on websites based on your WaniKani level",
-    "version": "0.4",
+    "version": "0.4.1",
     "manifest_version": 3,
     "action": {
         "default_popup": "popup.html"
@@ -9,11 +9,11 @@
     "content_scripts": [
         {
             "matches": ["*://*/*"],
-            "js": ["content.js"]
+            "js": ["src/content.js"]
         }
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "src/background.js"
     },
     "permissions": ["storage"]
 }
