@@ -1,7 +1,7 @@
-
-
 // Get stored word list from chrome storage
 chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel"], (data) => {
+    // The users level is not valid, e.g. it exceeds the maximum allowed level
+    // WaniKani requires that devs check if users are actually allowed to access content of this level
     if(!data.validUserLevel)
         return
 
