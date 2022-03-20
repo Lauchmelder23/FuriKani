@@ -83,6 +83,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
             vocabStyleSheet.innerHTML = data.enabledVocab ? vocabStyle : ""
             kanjiStyleSheet.innerHTML = data.enabledKanji ? kanjiStyle : ""
+
+            sendResponse(true)
         })
     }
 
