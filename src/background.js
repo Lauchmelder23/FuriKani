@@ -101,7 +101,7 @@ const sync = () =>
                 return reject("Please set a valid WaniKani API Token")
 
             // Get user info
-            var user = await query(data.token, "https://api.wanikani.com/v2/user").catch(reason => reject("WaniKani API request failed: " + reason))
+            var user = await query(data.token, "https://api.wanikani.com/v2/user").catch(reason => reject(reason))
             if(user === undefined)
                 return
             
