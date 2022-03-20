@@ -62,7 +62,7 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
         var rtTag = rubyTags.item(tag).getElementsByTagName("rt").item(0)
         if(vocabulary.includes(ruby.innerText))
             rtTag.classList.add("furikani-vocabulary")
-        else if(kanji.includes(ruby.innerText))
+        if(kanji.includes(ruby.innerText))
             rtTag.classList.add("furikani-kanji")
     }
 })
