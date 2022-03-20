@@ -1,5 +1,10 @@
+
+
 // Get stored word list from chrome storage
-chrome.storage.local.get(["vocabulary", "kanji"], (data) => {
+chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel"], (data) => {
+    if(!data.validUserLevel)
+        return
+
     const vocabulary = data.vocabulary
     const kanji = data.kanji
 
