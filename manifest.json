@@ -2,6 +2,11 @@
     "name": "FuriKani",
     "description": "Removes furigana on websites based on your WaniKani level",
     "version": "0.6",
+    "icons": {
+        "16": "res/icon16.png",
+        "48": "res/icon48.png",
+        "128": "res/icon128.png"
+    },
     "manifest_version": 3,
     "action": {
         "default_popup": "popup.html"
