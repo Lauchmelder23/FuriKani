@@ -3,6 +3,10 @@ const inputField = document.getElementById("token")
 const statusField = document.getElementById("token-status")
 const errorField = document.getElementById("error-text")
 
+const globalSetting = document.getElementById("setting-global")
+const vocabSetting = document.getElementById("setting-vocabulary")
+const kanjiSetting = document.getElementById("setting-kanji")
+
 // Set popup content
 chrome.storage.local.get(["level", "token"], (data) => {
     if(data.token === undefined)
