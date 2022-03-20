@@ -1,0 +1,53 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body 
+{
+    display: grid;
+    grid-template-rows: 1.5fr 1fr 3fr 2fr;
+    width: 250px;
+}
+
+header
+{
+    display: grid;
+    grid-template-columns: 8fr 1fr;
+    align-items: baseline;
+}
+
+h1 
+{
+    text-transform: uppercase;
+}
+
+h2
+{
+    font-size: 10pt;
+}
+
+#token-area
+{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+#input-area
+{
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+}
+
+#token-status
+{
+    font-size: 1rem;
+}
+
+#settings-area
+{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}

@@ -1,24 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
-    <input type="text" id="token" />
-    <button id="submit-token">
-        Submit
-    </button>
-    <button id="download">
-        Download Data
-    </button>
+    <header>
+        <h1>FuriKani</h1>
+        <h2>v0.4</h2>
+    </header>
 
-    <p id="loading">
-
-    </p>
-
-    <p>
-        Using WaniKani Level <span id="level"></span>
-    </p>
+    <div id="token-area">
+        <div id="input-area">
+            <span id="token-status"></span>
+            <input type="text" id="token" placeholder="Wanikani Token"/>
+            <button id="submit-token">OK</button>
+        </div>
+       
+        <span id="error-text">
+            
+        </span>
+    </div>
     
-    <script src="popup.js"></script>
+    <div id="settings-area">
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+            test 1
+        </label>
+
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+            test 2
+        </label>
+
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+            test 3
+        </label>
+    </div>
+
+    <footer>
+        Using WaniKani Level <span id="level"></span>
+    </footer>
+    
+    <script src="src/popup.js"></script>
 </body>
 </html>
