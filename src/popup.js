@@ -8,7 +8,7 @@ const vocabSetting = document.getElementById("setting-vocabulary")
 const kanjiSetting = document.getElementById("setting-kanji")
 
 // Set popup content
-chrome.storage.local.get(["level", "token"], (data) => {
+chrome.storage.local.get(["level", "token", "enabled", "enabledVocab", "enabledKanji"], (data) => {
     if(data.token === undefined)
     {
         statusField.innerHTML = String.fromCodePoint(0x2757)
@@ -36,6 +36,10 @@ chrome.storage.local.get(["level", "token"], (data) => {
             submitButton.classList.remove("new-token")
         }
     })
+
+    globalSetting.checked = data.enabled
+    vocabSetting.checked = data.enabledVocab
+    kanjiSetting.checked = data.enabledKanji
 })
 
 // Set the wanikani token
@@ -64,4 +68,47 @@ submitButton.addEventListener( "click", () => {
                 errorField.innerHTML = response.error
             }
         })
+})
+
+// Set settings event listeners
+globalSetting.addEventListener("change", () => {
+    chrome.storage.local.set({"enabled": globalSetting.checked})
+
+    if(!globalSetting.checked)
+    {
+        vocabSetting.checked = false
+        kanjiSetting.checked = false
+
+        vocabSetting.setAttribute("disabled", true)
+        kanjiSetting.setAttribute("disabled", true)
+    }
+    else
+    {
+        chrome.storage.local.get(["enabledVocab", "enabledKanji"], (data) => {
+            vocabSetting.checked = data.enabledVocab
+            kanjiSetting.checked = data.enabledKanji
+        })
+
+        vocabSetting.removeAttribute("disabled")
+        kanjiSetting.removeAttribute("disabled")
+    }
+
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "settingsUpdated"}, (r) => {})
+    })
+    
+})
+
+vocabSetting.addEventListener("change", () => {
+    chrome.storage.local.set({"enabledVocab": vocabSetting.checked})
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "settingsUpdated"}, (r) => {})
+    })
+})
+
+kanjiSetting.addEventListener("change", () => {
+    chrome.storage.local.set({"enabledKanji": kanjiSetting.checked})
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "settingsUpdated"}, (r) => {})
+    })
 })
