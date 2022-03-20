@@ -64,9 +64,9 @@ h2
 
 #token::placeholder
 {
-    border-width: 1px;
     background-color: #064663;
     color: #8d7553;
+    padding-left: 0.1rem;
 }
 
 #submit-token
@@ -81,7 +81,7 @@ h2
     background-color: #04293A;
 }
 
-#submit-token:host()
+#submit-token:active
 {
     background-color: #041C32;
 }
@@ -145,7 +145,7 @@ a, a:visited
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #04293A;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -163,11 +163,11 @@ a, a:visited
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #064663;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #064663;
 }
 
 input:checked + .slider:before {
