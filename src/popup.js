@@ -47,8 +47,9 @@ chrome.storage.local.get(["level", "token", "enabled", "enabledVocab", "enabledK
     kanjiSetting.checked = data.enabledKanji
 })
 
-// Set the wanikani token
+// Submit button pressed
 submitButton.addEventListener( "click", () => {
+    // If the submit field has a new token, replace the current one with it
     if(submitButton.classList.contains("new-token"))
     {
         chrome.storage.local.set({"token": inputField.value})
@@ -61,6 +62,7 @@ submitButton.addEventListener( "click", () => {
 
     statusField.innerHTML = String.fromCodePoint(0x23F1)
 
+    // Sync with wanikani
     chrome.runtime.sendMessage("", {type: "sync"}, response => {
             if(response.success)
             {

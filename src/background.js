@@ -154,4 +154,4 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
 })
 
 // At browser start, sync with wanikani
-sync().then(value => console.log(value)).catch(reason => console.error(reason))
+sync().then(value => console.log(value)).catch(reason => {})
