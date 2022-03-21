@@ -1,15 +1,18 @@
+// Vocab Furigana CSS
 var vocabStyle = `
     .furikani-vocabulary {
         display: none;
     }
 `
 
+// Kanji Furigana CSS
 var kanjiStyle  = `
     .furikani-kanji {
         display: none;
     }
 `
 
+// Create stylesheet elements on the website for the classes
 var vocabStyleSheet = document.createElement("style")
 var kanjiStyleSheet = document.createElement("style")
 
@@ -23,6 +26,7 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
     if(!data.validUserLevel)
         return
 
+    // If global setting is enabled, set the stylesheets depending on the other settings
     if(data.enabled)
     {
         if(data.enabledVocab)
@@ -45,7 +49,7 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
         var ruby = document.createElement("ruby")
         ruby.innerHTML = rubyTags.item(tag).innerHTML
 
-        // Remove all tags (except for <rb>)
+        // Remove all tags (except for <rb>, <span>)
         while(ruby.lastElementChild)
         {
             if(ruby.lastElementChild.tagName.toLowerCase() === "rb" ||
@@ -58,7 +62,8 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
             ruby.removeChild(ruby.lastElementChild)
         }
 
-        // If the contents of the <ruby> tag are in the word list, remove the <rt> tag
+        // If the contents of the <ruby> tag are in the word list, tag the <rt> tag
+        // with the correct class
         var rtTag = rubyTags.item(tag).getElementsByTagName("rt").item(0)
         if(vocabulary.includes(ruby.innerText))
             rtTag.classList.add("furikani-vocabulary")
@@ -68,11 +73,14 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
 })
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    // One of the switches was checked/unchecked
     if(msg.action === "settingsUpdated")
     {
+        // Retrieve current switch states
         chrome.storage.local.get(["enabled", "enabledVocab", "enabledKanji"], (data) => {  
             console.log(data)
-
+            
+            // If everything is disabled, disable all stylsheets
             if(!data.enabled)
             {
                 vocabStyleSheet.innerHTML = ""
@@ -81,6 +89,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                 return
             }
 
+            // Otherwise set the kanji and vocab stylesheets depending on their settings
             vocabStyleSheet.innerHTML = data.enabledVocab ? vocabStyle : ""
             kanjiStyleSheet.innerHTML = data.enabledKanji ? kanjiStyle : ""
 

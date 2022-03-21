@@ -1,8 +1,11 @@
+// Query a WaniKani API endpoint with the given token
 const query = (token, url) => 
     new Promise(async (resolve, reject) => { 
+        // Create header with the authorization token
         const requestHeaders = new Headers()
         requestHeaders.append("Authorization", "Bearer " + token)
 
+        // Construct request
         const endpoint = new Request(
             url, 
             { 
@@ -11,6 +14,8 @@ const query = (token, url) =>
             }
         )
 
+        // Fetch the response. If it returns HTTP 200, resolve the promise,
+        // otherwise reject it
         var result = await fetch(endpoint)
         if(!result.ok)
         {
@@ -21,6 +26,7 @@ const query = (token, url) =>
         return resolve(result.json())
     })
 
+// Update the local cache with new data
 const updateCache = async (token, oldLevel, newLevel) => {
     // If oldLevel is undefined, then a sync has never been performed (first time user)
     if(oldLevel === undefined)
