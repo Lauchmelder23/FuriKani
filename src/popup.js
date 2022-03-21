@@ -9,21 +9,25 @@ const kanjiSetting = document.getElementById("setting-kanji")
 
 // Set popup content
 chrome.storage.local.get(["level", "token", "enabled", "enabledVocab", "enabledKanji"], (data) => {
+    // If no token is set, display exlamation mark and checkmark button
     if(data.token === undefined)
     {
         statusField.innerHTML = String.fromCodePoint(0x2757)
         submitButton.innerHTML = String.fromCodePoint(0x2705)
         submitButton.classList.add("no-token")
     }
-    else
+    else    // else display checkmark and reload button
     {
         statusField.innerHTML = String.fromCodePoint(0x2705)
         submitButton.innerHTML = String.fromCodePoint(0x1F501)
     }
 
+    // Display the users current WaniKani level
     const levelSpan = document.getElementById("level")
     levelSpan.innerHTML = data.level
 
+    // If the input field contains text that is not the current token, turn the
+    // button into a checkmark (else turn it into a repeat button)
     inputField.addEventListener("input", () => {
         if(inputField.value !== "" && inputField.value !== data.token)
         {
@@ -37,13 +41,15 @@ chrome.storage.local.get(["level", "token", "enabled", "enabledVocab", "enabledK
         }
     })
 
+    // Set the switches to thecached values
     globalSetting.checked = data.enabled
     vocabSetting.checked = data.enabledVocab
     kanjiSetting.checked = data.enabledKanji
 })
 
-// Set the wanikani token
+// Submit button pressed
 submitButton.addEventListener( "click", () => {
+    // If the submit field has a new token, replace the current one with it
     if(submitButton.classList.contains("new-token"))
     {
         chrome.storage.local.set({"token": inputField.value})
@@ -56,24 +62,27 @@ submitButton.addEventListener( "click", () => {
 
     statusField.innerHTML = String.fromCodePoint(0x23F1)
 
+    // Sync with wanikani
     chrome.runtime.sendMessage("", {type: "sync"}, response => {
-            if(response.success)
-            {
-                statusField.innerHTML = String.fromCodePoint(0x2705)
-                errorField.innerHTML = ""
-            }
-            else
-            {
-                statusField.innerHTML = String.fromCodePoint(0x2757)
-                errorField.innerHTML = response.error
-            }
-        })
+        if(response.success)
+        {
+            statusField.innerHTML = String.fromCodePoint(0x2705)
+            errorField.innerHTML = ""
+        }
+        else
+        {
+            statusField.innerHTML = String.fromCodePoint(0x2757)
+            errorField.innerHTML = response.error
+        }
+    })
 })
 
 // Set settings event listeners
 globalSetting.addEventListener("change", () => {
     chrome.storage.local.set({"enabled": globalSetting.checked})
 
+    // If the global settings are unchecked, uncheck the other options as well   
+    // and disable them
     if(!globalSetting.checked)
     {
         vocabSetting.checked = false
@@ -82,7 +91,8 @@ globalSetting.addEventListener("change", () => {
         vocabSetting.setAttribute("disabled", true)
         kanjiSetting.setAttribute("disabled", true)
     }
-    else
+    // Else restore the values of the switches and activate them agin
+    else   
     {
         chrome.storage.local.get(["enabledVocab", "enabledKanji"], (data) => {
             vocabSetting.checked = data.enabledVocab
@@ -93,6 +103,7 @@ globalSetting.addEventListener("change", () => {
         kanjiSetting.removeAttribute("disabled")
     }
 
+    // Send a message to content script that the switches were updated
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {action: "settingsUpdated"}, (r) => {})
     })

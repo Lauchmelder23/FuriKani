@@ -1,8 +1,22 @@
+chrome.storage.local.get("token", (data) => {
+    if(data.token !== undefined)
+        return
+
+    chrome.storage.local.set({
+        "enabled": true,
+        "enabledVocab": true,
+        "enabledKanji": true
+    })
+})
+
+// Query a WaniKani API endpoint with the given token
 const query = (token, url) => 
     new Promise(async (resolve, reject) => { 
+        // Create header with the authorization token
         const requestHeaders = new Headers()
         requestHeaders.append("Authorization", "Bearer " + token)
 
+        // Construct request
         const endpoint = new Request(
             url, 
             { 
@@ -11,6 +25,8 @@ const query = (token, url) =>
             }
         )
 
+        // Fetch the response. If it returns HTTP 200, resolve the promise,
+        // otherwise reject it
         var result = await fetch(endpoint)
         if(!result.ok)
         {
@@ -21,6 +37,7 @@ const query = (token, url) =>
         return resolve(result.json())
     })
 
+// Update the local cache with new data
 const updateCache = async (token, oldLevel, newLevel) => {
     // If oldLevel is undefined, then a sync has never been performed (first time user)
     if(oldLevel === undefined)
@@ -39,9 +56,24 @@ const updateCache = async (token, oldLevel, newLevel) => {
     // Turn the array of levels into a comma separated list
     var levelURLString = levelArray.join(",")
 
-    // API endpoint + response data buffers
+    // Data buffers
+    var vocabulary = new Set();
+    var kanji = new Set();
+
+    // If the old level is less than the new level add the old data to the new data
+    if(oldLevel < newLevel)
+    {
+        await chrome.storage.local.get(["vocabulary", "kanji"], (data) => {
+            if(data.vocabulary !== undefined && data.kanji !== undefined)
+            {
+                data.vocabulary.forEach(vocabulary.add, vocabulary)
+                data.kanji.forEach(kanji.add, kanji)
+            }
+        })
+    }
+
+    // API endpoint
     var url = "https://api.wanikani.com/v2/subjects?types=vocabulary&levels=" + levelURLString
-    var vocabulary = []
     
     // WaniKani only sends 1000 elements in one response and then provides us with a link to the
     // next "page" of the data. We need to loop until the next page is null
@@ -53,14 +85,14 @@ const updateCache = async (token, oldLevel, newLevel) => {
             break
             
         for(let i in response.data)
-            vocabulary.push(response.data[i].data.characters)
+            vocabulary.add(response.data[i].data.characters)
 
         url = response.pages.next_url
     } while(url !== null)
 
     // Extract Kanji as well
     var url = "https://api.wanikani.com/v2/subjects?types=kanji&levels=" + levelURLString
-    var kanji = []
+    var kanji = new Set()
     
     do
     {
@@ -69,24 +101,15 @@ const updateCache = async (token, oldLevel, newLevel) => {
             break
             
         for(let i in response.data)
-            kanji.push(response.data[i].data.characters)
+            kanji.add(response.data[i].data.characters)
 
         url = response.pages.next_url
     } while(url !== null)
-
-    // If the old level is less than the new level add the old data to the new data
-    if(oldLevel < newLevel)
-    {
-        await chrome.storage.local.get(["vocabulary", "kanji"], (data) => {
-            vocabulary.concat(data.vocabulary)
-            kanji.concat(data.kanji)
-        })
-    }
     
     // Cache the data
     chrome.storage.local.set({
-        "vocabulary": vocabulary,
-        "kanji": kanji,
+        "vocabulary": [...vocabulary],
+        "kanji": [...kanji],
         "level": newLevel
     })
 }
@@ -142,4 +165,4 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
 })
 
 // At browser start, sync with wanikani
-sync().then(value => console.log(value)).catch(reason => console.error(reason))
+sync().then(value => console.log(value)).catch(reason => {})
