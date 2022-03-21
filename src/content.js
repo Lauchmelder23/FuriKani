@@ -78,8 +78,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     {
         // Retrieve current switch states
         chrome.storage.local.get(["enabled", "enabledVocab", "enabledKanji"], (data) => {  
-            console.log(data)
-            
             // If everything is disabled, disable all stylsheets
             if(!data.enabled)
             {
