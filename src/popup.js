@@ -64,17 +64,17 @@ submitButton.addEventListener( "click", () => {
 
     // Sync with wanikani
     chrome.runtime.sendMessage("", {type: "sync"}, response => {
-            if(response.success)
-            {
-                statusField.innerHTML = String.fromCodePoint(0x2705)
-                errorField.innerHTML = ""
-            }
-            else
-            {
-                statusField.innerHTML = String.fromCodePoint(0x2757)
-                errorField.innerHTML = response.error
-            }
-        })
+        if(response.success)
+        {
+            statusField.innerHTML = String.fromCodePoint(0x2705)
+            errorField.innerHTML = ""
+        }
+        else
+        {
+            statusField.innerHTML = String.fromCodePoint(0x2757)
+            errorField.innerHTML = response.error
+        }
+    })
 })
 
 // Set settings event listeners

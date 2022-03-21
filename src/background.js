@@ -1,3 +1,14 @@
+chrome.storage.local.get("token", (data) => {
+    if(data.token !== undefined)
+        return
+
+    chrome.storage.local.set({
+        "enabled": true,
+        "enabledVocab": true,
+        "enabledKanji": true
+    })
+})
+
 // Query a WaniKani API endpoint with the given token
 const query = (token, url) => 
     new Promise(async (resolve, reject) => { 
