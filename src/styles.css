@@ -53,6 +53,7 @@ h2
 #token-status
 {
     font-size: 1rem;
+    cursor: default;
 }
 
 #token 
@@ -74,11 +75,14 @@ h2
     border: none;
     background-color: #064663;
     font-size: 1rem;
+    transition: background-color 100ms linear;
 }
 
 #submit-token:hover
 {
     background-color: #04293A;
+    transition: background-color 100ms linear;
+    cursor: pointer;
 }
 
 #submit-token:active
@@ -118,6 +122,13 @@ a, a:visited
 {
     text-decoration: none;
     color: #2e94c3;
+    transition: color 100ms linear;
+}
+
+a:hover
+{
+    color: #49b9ec;
+    transition: color 100ms linear;
 }
 
 /* The switch - the box around the slider */
