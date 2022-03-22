@@ -6,7 +6,7 @@ This is a chrome extension that automatically removes furikani from websites bas
 ---
 
 ## Installation
-This extension is not on the web store (review pending). Download the repo and go to your extensions page in chrome (`chrome://extensions`). Enable the developer mode and add the root folder of this project as an unpacked extension.
+[Download it from the Chrome Web Store](https://chrome.google.com/webstore/detail/furikani/lbjenjfljjnlkbdfbgmgcnkfnddaeccl)
 
 ---
 
