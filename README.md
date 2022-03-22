@@ -1,7 +1,7 @@
 # FuriKani
 ![Icon](res/icon128.png)
 
-This is a chrome extension that automatically removes furikani from websites based on your WaniKani level
+This is a chrome extension that automatically removes furigana from websites based on your WaniKani level
 
 ---
 
