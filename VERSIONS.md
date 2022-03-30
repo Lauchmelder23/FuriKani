@@ -6,3 +6,8 @@
 
 ## v0.6.2
  * Added color transitions to buttons and links in the popup
+
+## v0.6.3
+ * Startup sync check is now more consistent
+ * Level number updates in realtime after sync
+ * Fixed bug where internal Kanji list would get reset on sync
