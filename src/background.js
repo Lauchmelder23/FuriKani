@@ -131,9 +131,6 @@ const sync = () =>
             // Get user level
             level = user.data.level
 
-            // If the users level is somehow larger than their max allowed level, set the flag
-            
-
             // if users level is larger than max allowed level, abort
             if(level > user.data.subscription.max_level_granted)
             {
@@ -141,7 +138,7 @@ const sync = () =>
                 return reject("User account level exceeds account level limit")
             }
 
-            // If the wanikani level differs from the local leve, update the cache
+            // If the wanikani level differs from the local level, update the cache
             if(level !== data.level)
                 updateCache(data.token, data.level, level)
 
@@ -165,4 +162,6 @@ chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
 })
 
 // At browser start, sync with wanikani
-sync().then(value => console.log(value)).catch(reason => {})
+chrome.runtime.onStartup.addListener(() => {
+    sync().then(value => console.log(value)).catch(reason => {})
+})
