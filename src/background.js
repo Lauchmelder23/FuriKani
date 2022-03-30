@@ -92,7 +92,6 @@ const updateCache = async (token, oldLevel, newLevel) => {
 
     // Extract Kanji as well
     var url = "https://api.wanikani.com/v2/subjects?types=kanji&levels=" + levelURLString
-    var kanji = new Set()
     
     do
     {
