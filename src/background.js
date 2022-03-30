@@ -140,7 +140,7 @@ const sync = () =>
 
             // If the wanikani level differs from the local level, update the cache
             if(level !== data.level)
-                updateCache(data.token, data.level, level)
+                await updateCache(data.token, data.level, level)
 
             chrome.storage.local.set({"validUserLevel": true})
             resolve("Successfully synchronized data!")
