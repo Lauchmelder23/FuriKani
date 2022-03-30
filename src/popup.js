@@ -68,6 +68,12 @@ submitButton.addEventListener( "click", () => {
         {
             statusField.innerHTML = String.fromCodePoint(0x2705)
             errorField.innerHTML = ""
+
+            // Update the users current WaniKani level
+            chrome.storage.local.get("level", (data) => {
+                const levelSpan = document.getElementById("level")
+                levelSpan.innerHTML = data.level
+            })
         }
         else
         {
