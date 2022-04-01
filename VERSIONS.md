@@ -11,3 +11,7 @@
  * Startup sync check is now more consistent
  * Level number updates in realtime after sync
  * Fixed bug where internal Kanji list would get reset on sync
+
+# v0.7
+ * FuriKani now supports Firefox!
+ * Fixed potential innerHTML risks
