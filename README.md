@@ -8,7 +8,7 @@ This is a chrome extension that automatically removes furigana from websites bas
 ## Installation
 [Download it from the Chrome Web Store](https://chrome.google.com/webstore/detail/furikani/lbjenjfljjnlkbdfbgmgcnkfnddaeccl)
 
-[Download it from the Firefox Add-On Store](https://addons.mozilla.org/de/firefox/addon/furikani/)
+[Download it from the Firefox Add-On Store](https://addons.mozilla.org/en-US/firefox/addon/furikani/)
 
 ---
 
