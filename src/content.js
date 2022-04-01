@@ -30,10 +30,10 @@ chrome.storage.local.get(["vocabulary", "kanji", "validUserLevel", "enabled", "e
     if(data.enabled)
     {
         if(data.enabledVocab)
-            vocabStyleSheet.innerHTML = vocabStyle
+            vocabStyleSheet.innerText = vocabStyle
         
         if(data.enabledKanji)
-            kanjiStyleSheet.innerHTML = kanjiStyle
+            kanjiStyleSheet.innerText = kanjiStyle
     }
 
     const vocabulary = data.vocabulary
@@ -81,15 +81,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             // If everything is disabled, disable all stylsheets
             if(!data.enabled)
             {
-                vocabStyleSheet.innerHTML = ""
-                kanjiStyleSheet.innerHTML = ""
+                vocabStyleSheet.innerText = ""
+                kanjiStyleSheet.innerText = ""
 
                 return
             }
 
             // Otherwise set the kanji and vocab stylesheets depending on their settings
-            vocabStyleSheet.innerHTML = data.enabledVocab ? vocabStyle : ""
-            kanjiStyleSheet.innerHTML = data.enabledKanji ? kanjiStyle : ""
+            vocabStyleSheet.innerText = data.enabledVocab ? vocabStyle : ""
+            kanjiStyleSheet.innerText = data.enabledKanji ? kanjiStyle : ""
 
             sendResponse(true)
         })

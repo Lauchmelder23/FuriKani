@@ -12,31 +12,31 @@ chrome.storage.local.get(["level", "token", "enabled", "enabledVocab", "enabledK
     // If no token is set, display exlamation mark and checkmark button
     if(data.token === undefined)
     {
-        statusField.innerHTML = String.fromCodePoint(0x2757)
-        submitButton.innerHTML = String.fromCodePoint(0x2705)
+        statusField.innerText = String.fromCodePoint(0x2757)
+        submitButton.innerText = String.fromCodePoint(0x2705)
         submitButton.classList.add("no-token")
     }
     else    // else display checkmark and reload button
     {
-        statusField.innerHTML = String.fromCodePoint(0x2705)
-        submitButton.innerHTML = String.fromCodePoint(0x1F501)
+        statusField.innerText = String.fromCodePoint(0x2705)
+        submitButton.innerText = String.fromCodePoint(0x1F501)
     }
 
     // Display the users current WaniKani level
     const levelSpan = document.getElementById("level")
-    levelSpan.innerHTML = data.level
+    levelSpan.innerText = data.level
 
     // If the input field contains text that is not the current token, turn the
     // button into a checkmark (else turn it into a repeat button)
     inputField.addEventListener("input", () => {
         if(inputField.value !== "" && inputField.value !== data.token)
         {
-            submitButton.innerHTML = String.fromCodePoint(0x2705)
+            submitButton.innerText = String.fromCodePoint(0x2705)
             submitButton.classList.add("new-token")
         }
         else 
         {
-            submitButton.innerHTML = String.fromCodePoint(0x1F501)
+            submitButton.innerText = String.fromCodePoint(0x1F501)
             submitButton.classList.remove("new-token")
         }
     })
@@ -60,25 +60,25 @@ submitButton.addEventListener( "click", () => {
     if(submitButton.classList.contains("no-token"))
         return
 
-    statusField.innerHTML = String.fromCodePoint(0x23F1)
+    statusField.innerText = String.fromCodePoint(0x23F1)
 
     // Sync with wanikani
     chrome.runtime.sendMessage("", {type: "sync"}, response => {
         if(response.success)
         {
-            statusField.innerHTML = String.fromCodePoint(0x2705)
-            errorField.innerHTML = ""
+            statusField.innerText = String.fromCodePoint(0x2705)
+            errorField.innerText = ""
 
             // Update the users current WaniKani level
             chrome.storage.local.get("level", (data) => {
                 const levelSpan = document.getElementById("level")
-                levelSpan.innerHTML = data.level
+                levelSpan.innerText = data.level
             })
         }
         else
         {
-            statusField.innerHTML = String.fromCodePoint(0x2757)
-            errorField.innerHTML = response.error
+            statusField.innerText = String.fromCodePoint(0x2757)
+            errorField.innerText = response.error
         }
     })
 })
